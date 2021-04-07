@@ -19,10 +19,8 @@ jobs:
         file-path: [intro.tex, folder1/test.tex]
 
     steps:
-    - uses: actions/checkout@v2
     - name: latexdiff for ${{ matrix.file-path }}
-      with:
-        file-path: ${{ matrix.file-path }}
+      uses: actions/checkout@v2
     - name: Install latexdiff
       run: |
         curl -o latexdiff.zip http://ctan.imsc.res.in/support/latexdiff.zip
