@@ -1,4 +1,6 @@
-name: Update latexdiff pdf (intro.tex)
+# Replace main with the branch name (use find and replace all for convenience)
+
+name: Update latexdiff pdf
 
 on:
   push:
@@ -6,6 +8,7 @@ on:
     - main
     paths:
     - intro.tex
+    - folder1/test.tex
 
 jobs:
   build:
@@ -13,14 +16,13 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: [3.8]
+        file-path: [intro.tex, folder1/test.tex]
 
     steps:
     - uses: actions/checkout@v2
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v2
+    - name: latexdiff for ${{ matrix.file-path }}
       with:
-        python-version: ${{ matrix.python-version }}
+        file-path: ${{ matrix.file-path }}
     - name: Install latexdiff
       run: |
         curl -o latexdiff.zip http://ctan.imsc.res.in/support/latexdiff.zip
@@ -28,16 +30,17 @@ jobs:
         cd latexdiff
         sudo make install
     - name: Save commits into files
+      # Save latest commit as new.tex and second latest commit as old.tex
       run: |
-        
-        git log -n 1 --pretty=format:"%H" main intro.tex | xargs -I{} git show {}:intro.tex > new.tex
-        git log -n 1 --skip 1 --pretty=format:"%H" main intro.tex | xargs -I{} git show {}:intro.tex > old.tex
-    - name: Run latexdiff on files
+        git log -n 1 --pretty=format:"%H" main ${{ matrix.file-path }} | xargs -I{} git show {}:${{ matrix.file-path }} > new.tex
+        git log -n 1 --skip 1 --pretty=format:"%H" main ${{ matrix.file-path }} | xargs -I{} git show {}:${{ matrix.file-path }} > old.tex
+    - name: Run latexdiff on saved files
+      # Run latexdiff on old.tex and new.tex
       run: |
         latexdiff old.tex new.tex > diff.tex
         latexdiff-vc 
     - name: Create Pull Request
-      uses: peter-evans/create-pull-request@v3
+      uses: peter-evans/create-pull-request@v3.8.2
       with:
         delete-branch: true
         branch-suffix: short-commit-hash
