@@ -1,4 +1,5 @@
-# Replace main with the branch name (use find and replace all for convenience)
+# Add new file with location under `paths` and `file-path`
+# Replace every `main` with the branch name (use find and replace all for convenience)
 
 name: Update latexdiff pdf
 
@@ -11,8 +12,7 @@ on:
     - folder1/test.tex
 
 jobs:
-  build:
-
+  latexdiff:
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -21,22 +21,28 @@ jobs:
     steps:
     - name: latexdiff for ${{ matrix.file-path }}
       uses: actions/checkout@v2
+
+      # Install latexdiff
     - name: Install latexdiff
       run: |
         curl -o latexdiff.zip http://ctan.imsc.res.in/support/latexdiff.zip
         unzip latexdiff.zip
         cd latexdiff
         sudo make install
-    - name: Save commits into files
+
       # Save latest commit as new.tex and second latest commit as old.tex
+    - name: Save commits into files
       run: |
         git log -n 1 --pretty=format:"%H" main ${{ matrix.file-path }} | xargs -I{} git show {}:${{ matrix.file-path }} > new.tex
         git log -n 1 --skip 1 --pretty=format:"%H" main ${{ matrix.file-path }} | xargs -I{} git show {}:${{ matrix.file-path }} > old.tex
-    - name: Run latexdiff on saved files
+
       # Run latexdiff on old.tex and new.tex
+    - name: Run latexdiff on saved files
       run: |
         latexdiff old.tex new.tex > diff.tex
         latexdiff-vc 
+
+      # Create a pull request
     - name: Create Pull Request
       uses: peter-evans/create-pull-request@v3.8.2
       with:
