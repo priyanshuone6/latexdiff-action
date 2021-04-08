@@ -21,12 +21,6 @@ jobs:
     steps:
     - name: latexdiff for ${{ matrix.file-path }}
       uses: actions/checkout@v2
-    - run: |
-        git config user.name github-actions
-        git config user.email github-actions@github.com
-        git add \*.pdf
-        git commit -m "Update ${{ matrix.file-path }} pdf"
-        git push
 
       # Install latexdiff
     - name: Install latexdiff
@@ -49,11 +43,11 @@ jobs:
       run: |
         yes "" | latexdiff-vc --pdf old.tex ${{ matrix.file-path }}
 
-#      # Push the pdf
-#    - uses: actions/checkout@v2
-#    - run: |
-#        git config user.name github-actions
-#        git config user.email github-actions@github.com
-#        git add \*.pdf
-#        git commit -m "Update ${{ matrix.file-path }} pdf"
-#        git push
+      # Push the pdf
+    - name: Push the pdf
+      run: |
+        git config user.name github-actions
+        git config user.email github-actions@github.com
+        git add \*.pdf
+        git commit -m "Update ${{ matrix.file-path }} pdf"
+        git push
