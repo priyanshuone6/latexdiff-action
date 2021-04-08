@@ -36,11 +36,10 @@ jobs:
         git log -n 1 --pretty=format:"%H" main ${{ matrix.file-path }} | xargs -I{} git show {}:${{ matrix.file-path }} > new.tex
         git log -n 1 --skip 1 --pretty=format:"%H" main ${{ matrix.file-path }} | xargs -I{} git show {}:${{ matrix.file-path }} > old.tex
 
-      # Run latexdiff on old.tex and new.tex
-    - name: Run latexdiff on saved files
+      # Run latexdiff on old.tex and new.tex and save it as pdf
+    - name: Run latexdiff
       run: |
-        latexdiff old.tex new.tex > diff.tex
-        latexdiff-vc 
+        yes "" | latexdiff-vc --pdf old.tex new.tex
 
       # Create a pull request
     - name: Create Pull Request
@@ -48,7 +47,7 @@ jobs:
       with:
         delete-branch: true
         branch-suffix: short-commit-hash
-        commit-message: update pdf
-        title: Update pdf
+        commit-message: Update ${{ matrix.file-path }} pdf
+        title: Update ${{ matrix.file-path }} pdf
         body: |
-            Update pdf
+            Update ${{ matrix.file-path }} pdf
