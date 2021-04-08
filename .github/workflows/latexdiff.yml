@@ -52,6 +52,6 @@ jobs:
         git config user.email 41898282+github-actions[bot]@users.noreply.github.com
         git add \*.pdf
         git reset latexdiff/*
-        git commit -m "Update ${{ matrix.file-path }} pdf"
+        git commit -m "Update the pdf of ${{ matrix.file-path }}"
         git pull
         git push
