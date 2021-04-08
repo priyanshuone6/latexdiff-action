@@ -32,7 +32,7 @@ jobs:
         cd latexdiff
         sudo make install
         cd ..
-        pip install pdflatex
+        sudo apt install texlive-latex-base
 
       # Save second latest commit as old.tex
     - name: Save commit into a file
