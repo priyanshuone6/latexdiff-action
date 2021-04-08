@@ -31,25 +31,23 @@ jobs:
         sudo make install
         cd ..
 
-      # Save latest commit as new.tex and second latest commit as old.tex
-    - name: Save commits into files
+      # Save second latest commit as old.tex
+    - name: Save commit into a file
       run: |
         ls -a
-        git log -n 1 --pretty=format:"%H" main ${{ matrix.file-path }} | xargs -I{} git show {}:${{ matrix.file-path }} > new.tex
         git log -n 1 --skip 1 --pretty=format:"%H" main ${{ matrix.file-path }} | xargs -I{} git show {}:${{ matrix.file-path }} > old.tex
         cat old.tex
+
       # Run latexdiff on old.tex and new.tex and save it as pdf
     - name: Run latexdiff
       run: |
-        yes "" | latexdiff-vc --pdf old.tex new.tex
+        yes "" | latexdiff-vc --pdf old.tex ${{ matrix.file-path }}
 
-      # Create a pull request
-    - name: Create Pull Request
-      uses: peter-evans/create-pull-request@v3.8.2
-      with:
-        delete-branch: true
-        branch-suffix: short-commit-hash
-        commit-message: Update ${{ matrix.file-path }} pdf
-        title: Update ${{ matrix.file-path }} pdf
-        body: |
-            Update ${{ matrix.file-path }} pdf
+      # Push the pdf
+    - uses: actions/checkout@v2
+    - run: |
+        git config user.name github-actions
+        git config user.email github-actions@github.com
+        git add \*.pdf
+        git commit -m "Update ${{ matrix.file-path }} pdf"
+        git push
