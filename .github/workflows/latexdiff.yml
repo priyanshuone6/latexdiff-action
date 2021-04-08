@@ -16,10 +16,10 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        file-path: ${{ push.paths }}
+        file-path: [intro.tex, folder1/test.tex]
 
     steps:
-    - name: latexdiff for ${{ push.paths }}
+    - name: latexdiff for ${{ matrix.file-path }}
       uses: actions/checkout@v2
       with:
         fetch-depth: 0
@@ -37,12 +37,12 @@ jobs:
       # Save second latest commit as old.tex
     - name: Save commit into a file
       run: |
-        git log -n 1 --skip 1 --pretty=format:"%H" main ${{ push.paths }} | xargs -I{} git show {}:${{ push.paths }} > old.tex
+        git log -n 1 --skip 1 --pretty=format:"%H" main ${{ matrix.file-path }} | xargs -I{} git show {}:${{ matrix.file-path }} > old.tex
 
       # Run latexdiff and save it as a pdf
     - name: Run latexdiff
       run: |
-        yes "" | latexdiff-vc --pdf old.tex ${{ push.paths }}
+        yes "" | latexdiff-vc --pdf old.tex ${{ matrix.file-path }}
 
       # Push the pdf
     - name: Push the pdf
@@ -52,6 +52,7 @@ jobs:
         git config user.email 41898282+github-actions[bot]@users.noreply.github.com
         git add \*.pdf
         git reset latexdiff/*
-        git commit -m "Update the pdf of ${{ push.paths }}"
+        git commit -m "Update the pdf of ${{ matrix.file-path }}"
         git pull
         git push
+
