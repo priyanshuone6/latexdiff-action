@@ -26,10 +26,13 @@ jobs:
     - name: Install latexdiff
       run: |
         curl -o latexdiff.zip http://ctan.imsc.res.in/support/latexdiff.zip
+        ls
         unzip latexdiff.zip
         cd latexdiff
+        ls
         sudo make install
         cd ..
+        ls
 
       # Save latest commit as new.tex and second latest commit as old.tex
     - name: Save commits into files
