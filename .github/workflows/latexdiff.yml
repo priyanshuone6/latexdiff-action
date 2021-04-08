@@ -7,9 +7,9 @@ on:
   push:
     branches:
     - main
-#    paths:
-#    - intro.tex
-#    - folder1/test.tex
+    paths:
+    - intro.tex
+    - folder1/test.tex
 
 jobs:
   latexdiff:
@@ -37,9 +37,7 @@ jobs:
       # Save second latest commit as old.tex
     - name: Save commit into a file
       run: |
-        git log -n 4 --pretty=format:"%H" main intro.tex
         git log -n 1 --skip 1 --pretty=format:"%H" main ${{ matrix.file-path }} | xargs -I{} git show {}:${{ matrix.file-path }} > old.tex
-        cat old.tex
 
       # Run latexdiff and save it as a pdf
     - name: Run latexdiff
