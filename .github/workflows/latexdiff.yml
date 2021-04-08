@@ -53,4 +53,5 @@ jobs:
         git add \*.pdf
         git reset latexdiff/*
         git commit -m "Update ${{ matrix.file-path }} pdf"
+        git pull
         git push
