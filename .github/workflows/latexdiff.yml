@@ -1,4 +1,4 @@
-# Add new file with location under `paths` and `file-path`
+# Add new file name with path under `paths` and `file-path`
 # Replace every `main` with the branch name (use find and replace all for convenience)
 
 name: Update latexdiff pdf
