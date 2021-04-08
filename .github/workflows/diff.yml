@@ -29,6 +29,7 @@ jobs:
         unzip latexdiff.zip
         cd latexdiff
         sudo make install
+        cd ..
 
       # Save latest commit as new.tex and second latest commit as old.tex
     - name: Save commits into files
