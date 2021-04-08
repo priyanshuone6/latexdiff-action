@@ -9,14 +9,14 @@ on:
     - main
     paths:
     - intro.tex
-    - folder1/test.tex
+    - example/test.tex
 
 jobs:
   latexdiff:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        file-path: [intro.tex, folder1/test.tex]
+        file-path: [intro.tex, example/test.tex]
 
     steps:
     - name: latexdiff for ${{ matrix.file-path }}
