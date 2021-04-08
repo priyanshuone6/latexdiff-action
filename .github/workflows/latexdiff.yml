@@ -34,7 +34,6 @@ jobs:
       # Save second latest commit as old.tex
     - name: Save commit into a file
       run: |
-        ls -a
         git log -n 2 --pretty=format:"%H" main intro.tex | tail -1 | xargs -I{} git show {}:intro.tex > old.tex
         cat old.tex
 
@@ -46,8 +45,8 @@ jobs:
       # Push the pdf
     - name: Push the pdf
       run: |
-        git config user.name github-actions
-        git config user.email github-actions@github.com
+        git config user.name github-actions[bot]
+        git config user.email 41898282+github-actions[bot]@users.noreply.github.com
         git add \*.pdf
         git reset latexdiff/*
         git commit -m "Update ${{ matrix.file-path }} pdf"
