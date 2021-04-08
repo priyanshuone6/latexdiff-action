@@ -35,7 +35,6 @@ jobs:
     - name: Save commit into a file
       run: |
         ls -a
-#        git log -n 1 --skip 1 --pretty=format:"%H" main ${{ matrix.file-path }} | xargs -I{} git show {}:${{ matrix.file-path }} > old.tex
         git log -n 2 --pretty=format:"%H" main intro.tex | tail -1 | xargs -I{} git show {}:intro.tex > old.tex
         cat old.tex
 
