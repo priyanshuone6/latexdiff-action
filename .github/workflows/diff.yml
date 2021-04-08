@@ -7,9 +7,9 @@ on:
   push:
     branches:
     - main
-    paths:
-    - intro.tex
-    - folder1/test.tex
+#    paths:
+#    - intro.tex
+#    - folder1/test.tex
 
 jobs:
   latexdiff:
@@ -37,7 +37,8 @@ jobs:
         ls -a
         git log -n 1 --pretty=format:"%H" main ${{ matrix.file-path }} | xargs -I{} git show {}:${{ matrix.file-path }} > new.tex
         git log -n 1 --skip 1 --pretty=format:"%H" main ${{ matrix.file-path }} | xargs -I{} git show {}:${{ matrix.file-path }} > old.tex
-        ls
+        cat old.tex
+        cat new.tex
       # Run latexdiff on old.tex and new.tex and save it as pdf
     - name: Run latexdiff
       run: |
