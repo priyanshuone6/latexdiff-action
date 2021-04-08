@@ -34,7 +34,7 @@ jobs:
       # Save second latest commit as old.tex
     - name: Save commit into a file
       run: |
-        git log -n 3 --pretty=format:"%H" main intro.tex
+        git log -n 4 --pretty=format:"%H" main intro.tex
         git log -n 2 --pretty=format:"%H" main intro.tex | tail -1 | xargs -I{} git show {}:intro.tex > old.tex
         cat old.tex
 
