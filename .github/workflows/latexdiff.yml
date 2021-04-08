@@ -21,6 +21,8 @@ jobs:
     steps:
     - name: latexdiff for ${{ matrix.file-path }}
       uses: actions/checkout@v2
+      with:
+        fetch-depth: 2
 
       # Install latexdiff
     - name: Install latexdiff
