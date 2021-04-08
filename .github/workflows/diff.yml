@@ -38,7 +38,6 @@ jobs:
         git log -n 1 --pretty=format:"%H" main ${{ matrix.file-path }} | xargs -I{} git show {}:${{ matrix.file-path }} > new.tex
         git log -n 1 --skip 1 --pretty=format:"%H" main ${{ matrix.file-path }} | xargs -I{} git show {}:${{ matrix.file-path }} > old.tex
         cat old.tex
-        cat new.tex
       # Run latexdiff on old.tex and new.tex and save it as pdf
     - name: Run latexdiff
       run: |
