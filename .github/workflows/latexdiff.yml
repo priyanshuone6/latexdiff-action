@@ -22,7 +22,7 @@ jobs:
     - name: latexdiff for ${{ matrix.file-path }}
       uses: actions/checkout@v2
       with:
-        fetch-depth: 2
+        fetch-depth: 0
 
       # Install latexdiff
     - name: Install latexdiff
@@ -37,7 +37,7 @@ jobs:
     - name: Save commit into a file
       run: |
         git log -n 4 --pretty=format:"%H" main intro.tex
-        git log -n 2 --pretty=format:"%H" main intro.tex | tail -1 | xargs -I{} git show {}:intro.tex > old.tex
+        git log -n 1 --skip 1 --pretty=format:"%H" main ${{ matrix.file-path }} | xargs -I{} git show {}:${{ matrix.file-path }} > old.tex
         cat old.tex
 
       # Run latexdiff and save it as a pdf
