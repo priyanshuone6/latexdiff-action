@@ -32,7 +32,13 @@ runs:
         do
             git log -n 1 --skip 1 --pretty=format:"%H" "$file" | xargs -I{} git show {}:"$file" > old_commit.tex
             yes "" | latexdiff-vc ${{ inputs.options }} --pdf old_commit.tex "$file"
-
+            git config user.name ${{ inputs.git-username }}
+            git config user.email ${{ inputs.git-email }}
+            git add \*.pdf
+            git reset latexdiff/*
+            git commit -m 'Update the pdf of "$file"'
+            git pull
+            git push
         done
 branding:
   icon: 'edit-3'  
