@@ -25,3 +25,4 @@ jobs:
         git commit -m "Update the pdf of ${{ matrix.file-path }}"
         git pull
         git push
+        
