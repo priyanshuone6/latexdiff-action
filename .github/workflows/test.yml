@@ -7,12 +7,21 @@ jobs:
   latexdiff-action:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-        # Required to fetch all the commits for all branches
-        with:
-          fetch-depth: 0
-
-      - name: latexdiff-action
-        uses: priyanshuone6/latexdiff-action@v0.1
-        with:
-          file-paths: test.tex
+    - uses: actions/checkout@v2
+      # Required to fetch all the commits for all branches
+      with:
+        fetch-depth: 0
+    - name: latexdiff-action
+      uses: priyanshuone6/latexdiff-action@v0.1
+      with:
+        file-paths: test.tex
+    - name: Push the pdf
+      continue-on-error: true
+      run: |
+        git config user.name github-actions[bot]
+        git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+        git add \*.pdf
+        git reset latexdiff/*
+        git commit -m "Update the pdf of ${{ matrix.file-path }}"
+        git pull
+        git push
