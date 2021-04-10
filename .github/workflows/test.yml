@@ -1,0 +1,18 @@
+name: Update latexdiff pdf
+
+on:
+  push:
+
+jobs:
+  latexdiff-action:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        # Required to fetch all the commits for all branches
+        with:
+          fetch-depth: 0
+
+      - name: latexdiff-action
+        uses: priyanshuone6/latexdiff-action@v1
+        with:
+          file-paths: [test.tex]
