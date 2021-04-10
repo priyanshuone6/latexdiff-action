@@ -18,9 +18,10 @@ def run_cmd(command):
 
 run_cmd("curl -o latexdiff.zip http://ctan.imsc.res.in/support/latexdiff.zip")
 run_cmd("unzip latexdiff.zip")
-run_cmd("cd latexdiff")
+main_dir = os.getcwd()
+os.chdir("latexdiff")
 run_cmd("sudo make install")
-run_cmd("cd ..")
+os.chdir(main_dir)
 run_cmd("sudo apt install texlive-latex-base")
 run_cmd("git config user.name github-actions[bot]")
 run_cmd("git config user.email 41898282+github-actions[bot]@users.noreply.github.com")
