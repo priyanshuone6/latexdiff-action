@@ -15,7 +15,7 @@ jobs:
       uses: priyanshuone6/latexdiff-action@v0.1
       continue-on-error: true
       with:
-        file-paths: test.tex
+        file-paths: test.tex,folder1/test2.tex
     - name: Push the pdf
       continue-on-error: true
       run: |
