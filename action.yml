@@ -1,0 +1,26 @@
+name: 'latexdiff-action'
+description: 'Runs latexdiff whenever a tex file is updated, and pushes the resulting pdf back into the repository.'
+inputs:
+  file-paths:
+    description: 'File paths to run latexdiff on'
+    required: true
+  git-username:
+    description: 'Set git username'
+    required: false
+    default: 'github-actions[bot]'
+  git-email:
+    description: 'Set git user email'
+    required: false
+    default: '41898282+github-actions[bot]@users.noreply.github.com'
+  commit-msg:
+    description: 'Commit message to use while committing files'
+    required: false
+    default: 'Update the pdf of ${{ inputs.file-paths }}'
+runs:
+  using: "composite"
+  steps:
+    - run: ${{ github.action_path }}/script.sh
+      shell: bash
+branding:
+  icon: 'file-text'
+  color: 'gray-dark'
