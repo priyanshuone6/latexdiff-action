@@ -12,7 +12,7 @@ jobs:
       with:
         fetch-depth: 0
     - name: latexdiff-action
-      uses: priyanshuone6/latexdiff-action@v0.7
+      uses: priyanshuone6/latexdiff-action@v0.8
       continue-on-error: true
       with:
         file-paths: test.tex,folder1/test2.tex
