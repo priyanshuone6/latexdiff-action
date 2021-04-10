@@ -15,4 +15,4 @@ jobs:
       - name: latexdiff-action
         uses: priyanshuone6/latexdiff-action@v0.1
         with:
-          file-paths: test.tex,folder1/test2.tex
+          file-paths: test.tex
