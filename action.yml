@@ -36,3 +36,6 @@ runs:
         git commit -m "${{ inputs.commit-msg }}"
         git pull
         git push
+branding:
+  icon: 'edit-3'  
+  color: 'gray-dark'
