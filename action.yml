@@ -1,0 +1,47 @@
+name: 'latexdiff-action'
+description: 'Runs latexdiff whenever a tex file is updated, and pushes the resulting pdf back into the repository.'
+inputs:
+  file-paths:
+    description: 'File paths to run latexdiff on'
+    required: true
+  git-username:
+    description: 'Set git username'
+    required: false
+    default: 'github-actions[bot]'
+  git-email:
+    description: 'Set git user email'
+    required: false
+    default: '41898282+github-actions[bot]@users.noreply.github.com'
+  options:
+    description: 'latexdiff options'
+    required: false
+    default: ''
+runs:
+  using: "composite"
+  steps:
+    - shell: bash
+      run: |
+        curl -o latexdiff.zip http://ctan.imsc.res.in/support/latexdiff.zip
+        unzip latexdiff.zip
+        cd latexdiff
+        sudo make install
+        cd ..
+        sudo apt install texlive-latex-base
+        git config user.name ${{ inputs.git-username }}
+        git config user.email ${{ inputs.git-email }}
+        variable=${{ inputs.file-paths }}
+        for file in ${variable//,/ }
+        do
+            git log -n 1 --skip 1 --pretty=format:"%H" "$file" | xargs -I{} git show {}:"$file" > old_commit.tex
+            yes "" 2>/dev/null | latexdiff-vc ${{ inputs.options }} --pdf old_commit.tex "$file"
+            ls -a
+            cat old_commit.tex
+            git add \*.pdf
+            git reset latexdiff/*
+            git commit -m 'Update the pdf of "$file"'
+            git pull
+            git push
+        done
+branding:
+  icon: 'edit-3'  
+  color: 'gray-dark'
