@@ -13,6 +13,7 @@ jobs:
         fetch-depth: 0
     - name: latexdiff-action
       uses: priyanshuone6/latexdiff-action@v0.1
+      continue-on-error: true
       with:
         file-paths: test.tex
     - name: Push the pdf
@@ -25,4 +26,3 @@ jobs:
         git commit -m "Update the pdf of ${{ matrix.file-path }}"
         git pull
         git push
-        
