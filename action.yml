@@ -33,8 +33,8 @@ runs:
         for file in ${variable//,/ }
         do
             git log -n 1 --skip 1 --pretty=format:"%H" "$file" | xargs -I{} git show {}:"$file" > old_commit.tex
-            yes "" | latexdiff-vc ${{ inputs.options }} --pdf old_commit.tex "$file"
-            ls
+            yes "" 2>/dev/null | latexdiff-vc ${{ inputs.options }} --pdf old_commit.tex "$file"
+            ls -a
             cat old_commit.tex
             git add \*.pdf
             git reset latexdiff/*
